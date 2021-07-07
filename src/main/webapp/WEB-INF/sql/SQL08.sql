@@ -16,6 +16,7 @@ CREATE TABLE tbl_member_auth (
     FOREIGN KEY (userid) REFERENCES tbl_member(userid)
 );
 
+
 SELECT * FROM tbl_member;
 SELECT * FROM tbl_member_auth;
 
