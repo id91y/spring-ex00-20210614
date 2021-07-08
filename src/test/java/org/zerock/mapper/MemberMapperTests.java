@@ -10,7 +10,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.zerock.domain.AuthVO;
 import org.zerock.domain.MemberVO;
 
 import lombok.Setter;
@@ -36,7 +35,7 @@ public class MemberMapperTests {
 		assertNotNull(encoder);
 	}
 
-	@Test
+	@Test(expected = Exception.class)
 	public void testInsert1() {
 		MemberVO vo1 = new MemberVO();
 		vo1.setUserid("member");
@@ -58,12 +57,11 @@ public class MemberMapperTests {
 	
 	@Test
 	public void testInsertAuth() {
-		AuthVO vo1 = new AuthVO();
 		/*
+		AuthVO vo1 = new AuthVO();
 		vo1.setAuth("ROLE_MEMBER");
 		vo1.setUserid("member");
 		mapper.insertAuth(vo1);
-		 */
 		
 		vo1.setAuth("ROLE_MEMBER");
 		vo1.setUserid("admin");
@@ -72,6 +70,7 @@ public class MemberMapperTests {
 		vo1.setAuth("ROLE_ADMIN");
 		vo1.setUserid("admin");
 		mapper.insertAuth(vo1);
+		*/
 	}
 	
 	@Test
@@ -83,6 +82,16 @@ public class MemberMapperTests {
 		assertEquals("어드민", vo.getUserName());
 		assertTrue(encoder.matches("admin", vo.getUserpw()));
 		assertTrue(vo.isEnabled());
+	}
+	
+	@Test
+	public void testUpdate() {
+		MemberVO vo = mapper.read("newid2");
+		
+		String newpw = "111";
+		vo.setUserpw(encoder.encode(newpw));
+		
+		assertEquals(1, mapper.update(vo));
 	}
 }
 
